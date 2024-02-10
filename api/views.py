@@ -1,11 +1,23 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializer import InfoSerializer
+from .serializer import *
 from .models import Info
-
+from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+class Register(APIView):
+    def post(self,request):
+        serializer=UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            user=User.objects.get(username=request.data['username'])
+            token_obj=Token.objects.get_or_create(user=user)
+            return Response({'Massage':serializer.data,'token':str(token_obj)})
+        return Response({'Massage':serializer.errors})
 
 class InfoApiView(APIView):
-
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self,request):
         getdata=Info.objects.all()
         serializer=InfoSerializer(getdata,many=True)
