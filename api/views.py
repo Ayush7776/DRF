@@ -1,64 +1,23 @@
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
 from .serializer import *
 from .models import Info
-from rest_framework.authtoken.models import Token
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
 
-class Register(APIView):
-    def post(self,request):
-        serializer=UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            user=User.objects.get(username=serializer.data['username'])
-            refresh = RefreshToken.for_user(user)
-            return Response({'Massage':serializer.data,'refresh':str(refresh),'access': str(refresh.access_token)})
-        return Response({'Massage':serializer.errors})
+# generics.ListAPIView For Get Method
+# genirics.CreateAPIView For Post Method
+# genirics.ListCreateAPIView For Both Abou Method
 
-class InfoApiView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-    def get(self,request):
-        getdata=Info.objects.all()
-        serializer=InfoSerializer(getdata,many=True)
-        return Response({'Massage':serializer.data})
-        return Response({'Massage':serializer.errors})
-
-    def post(self,request):
-        serializer = InfoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'Massage':serializer.data})
-        return Response({'Massage':serializer.errors})
-
-    def put(self,request):
-        getdata=Info.objects.get(id=request.data['id'])
-        serializer=InfoSerializer(getdata,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'Massage':serializer.data})
-        return Response({'error':serializer.errors})
-
-    def patch(self,request):
-        getdata=Info.objects.get(id=request.data['id'])
-        serializer=InfoSerializer(getdata,data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'Massage':serializer.data})
-        return Response({'error':serializer.errors})
-   
-    def delete(self,request):
-        getdata=Info.objects.get(id=request.data['id'])
-        if getdata:
-            getdata.delete()
-            return Response({'Massage':"Data Deleted SuccessFully.."})
-        return Response({'Massage':"User Not Found.."})
-
-
-
-
+class InfoGeneric(generics.ListAPIView,generics.CreateAPIView):
+    queryset = Info.objects.all()
+    serializer_class=InfoSerializer
+# generics.RetrieveAPIView For Get Specific Data By ID
+# generics.UpdateAPIView For Put Method
+# genirics.DestroyAPIView For Delete Method
+class InfoGeneric2(generics.UpdateAPIView,generics.DestroyAPIView):
+    queryset = Info.objects.all()
+    serializer_class=InfoSerializer
+    lookup_field='id'
+    
 
 
 
