@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import AnonRateThrottle,UserRateThrottle
-
+from .throttling import KunalThrottle
 class Register(APIView):
     def post(self,request):
         serializer=UserSerializer(data=request.data)
@@ -20,7 +20,7 @@ class Register(APIView):
 class InfoApiView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    throttle_classes=[AnonRateThrottle,UserRateThrottle]
+    throttle_classes=[AnonRateThrottle,KunalThrottle]
     def get(self,request):
         getdata=Info.objects.all()
         serializer=InfoSerializer(getdata,many=True)
