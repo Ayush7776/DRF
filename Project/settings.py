@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
     'api',
 ]
 
@@ -109,13 +108,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-REST_FRAMEWORK={
-    'DEFAULT_THROTTLE_RATES':{
-        'anon':'2/minute',
-        'user':'5/hour',
-        'kunu':'3/minute'
-    }
-}
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

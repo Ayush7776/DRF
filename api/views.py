@@ -2,61 +2,16 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import *
 from .models import Info
-from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.throttling import AnonRateThrottle,UserRateThrottle
-from .throttling import KunalThrottle
-class Register(APIView):
-    def post(self,request):
-        serializer=UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            user=User.objects.get(username=request.data['username'])
-            token_obj=Token.objects.get_or_create(user=user)
-            return Response({'Massage':serializer.data,'token':str(token_obj)})
-        return Response({'Massage':serializer.errors})
+from rest_framework.generics import ListAPIView
 
-class InfoApiView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    throttle_classes=[AnonRateThrottle,KunalThrottle]
-    def get(self,request):
-        getdata=Info.objects.all()
-        serializer=InfoSerializer(getdata,many=True)
-        return Response({'Massage':serializer.data})
-        return Response({'Massage':serializer.errors})
+class InfoApiView(ListAPIView):
+    queryset=Info.objects.all()
+    serializer_class=InfoSerializer
+    def get_queryset(self):
+        user=self.request.user
+        return Info.objects.filter(Admin=user)
 
-    def post(self,request):
-        serializer = InfoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'Massage':serializer.data})
-        return Response({'Massage':serializer.errors})
-
-    def put(self,request):
-        getdata=Info.objects.get(id=request.data['id'])
-        serializer=InfoSerializer(getdata,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'Massage':serializer.data})
-        return Response({'error':serializer.errors})
-
-    def patch(self,request):
-        getdata=Info.objects.get(id=request.data['id'])
-        serializer=InfoSerializer(getdata,data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'Massage':serializer.data})
-        return Response({'error':serializer.errors})
-   
-    def delete(self,request):
-        getdata=Info.objects.get(id=request.data['id'])
-        if getdata:
-            getdata.delete()
-            return Response({'Massage':"Data Deleted SuccessFully.."})
-        return Response({'Massage':"User Not Found.."})
-
+    
 
 
 
