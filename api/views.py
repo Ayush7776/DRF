@@ -3,11 +3,10 @@ from rest_framework.views import APIView
 from .serializer import *
 from .models import Info
 from rest_framework.generics import ListAPIView
-from django_filters.rest_framework import DjangoFilterBackend
+
 class InfoApiView(ListAPIView):
     queryset=Info.objects.all()
     serializer_class=InfoSerializer
-    filter_backends=[DjangoFilterBackend]
 
     # filterset_fields=['Admin']
     # http://127.0.0.1:8000/api/?Admin=Neha
