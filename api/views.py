@@ -3,16 +3,27 @@ from rest_framework.views import APIView
 from .serializer import *
 from .models import Info
 from rest_framework.generics import ListAPIView
+from rest_framework.filters import SearchFilter
 
 class InfoApiView(ListAPIView):
     queryset=Info.objects.all()
     serializer_class=InfoSerializer
+    filter_backends=[SearchFilter]
 
-    # filterset_fields=['Admin']
-    # http://127.0.0.1:8000/api/?Admin=Neha
+    # http://localhost:8000/api/?search=Neha
+    search_fields=['Admin']
+
+    # http://localhost:8000/api/?search=CSN
+    # search_fields=['Admin','City']
     
-    filterset_fields=['Admin','Name']
-    # http://127.0.0.1:8000/api/?Admin=Neha&Name=Gaurang
+    # search_fields=['^Admin']
+    # search_fields=['=Admin']
+    # search_fields=['$Admin']
+
+
+
+
+
 
     
 
