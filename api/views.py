@@ -3,39 +3,20 @@ from rest_framework.views import APIView
 from .serializer import *
 from .models import Info
 from rest_framework.generics import ListAPIView
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter
 
 class InfoApiView(ListAPIView):
     queryset=Info.objects.all()
     serializer_class=InfoSerializer
-    filter_backends=[SearchFilter]
+    filter_backends=[OrderingFilter]
 
-    # http://localhost:8000/api/?search=Neha
-    search_fields=['Admin']
+    # http://localhost:8000/api/?ordering=Admin For Asending Order 
+    # http://localhost:8000/api/?ordering=-Admin For Desending Order 
 
-    # http://localhost:8000/api/?search=CSN
-    # search_fields=['Admin','City']
-    
-    # search_fields=['^Admin']
-    # search_fields=['=Admin']
-    # search_fields=['$Admin']
+    # ordering_fields=['Admin']
 
 
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
+   
 
 
 
