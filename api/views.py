@@ -8,12 +8,7 @@ from rest_framework.filters import OrderingFilter
 class InfoApiView(ListAPIView):
     queryset=Info.objects.all()
     serializer_class=InfoSerializer
-    filter_backends=[OrderingFilter]
 
-    # http://localhost:8000/api/?ordering=Admin For Asending Order 
-    # http://localhost:8000/api/?ordering=-Admin For Desending Order 
-
-    # ordering_fields=['Admin']
 
 
    

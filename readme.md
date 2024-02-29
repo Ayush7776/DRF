@@ -1,14 +1,13 @@
-## Filter Using Generic ListAPIView
-```bash
-pip install django_filter
-```
-### 2] INSTALLED_APPS = [
-    'django_filters',
+### 1] INSTALLED_APPS = [
+    'rest_framework',
 ]
 
-### 3] To Import Filters Globaly In Settings.py File
+### 2] To Import Filters Globaly In Settings.py File
 ```
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2
 }
 ```
+### 3]Simpaly Hit That URL  http://localhost:8000/api/?page=2
+
