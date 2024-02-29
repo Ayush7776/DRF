@@ -4,11 +4,12 @@ from .serializer import *
 from .models import Info
 from rest_framework.generics import ListAPIView
 from rest_framework.filters import OrderingFilter
+from .pagination import MyPagination
 
 class InfoApiView(ListAPIView):
     queryset=Info.objects.all()
     serializer_class=InfoSerializer
-
+    pagination_class=MyPagination
 
 
    
