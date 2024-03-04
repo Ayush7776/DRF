@@ -1,24 +1,14 @@
-from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.pagination import CursorPagination
 
-class MyPagination(LimitOffsetPagination):
+class MyPagination(CursorPagination):
     
     # How Many Records Will Display In In Singal Page That Will Deside Limit Attribute
-    default_limit=3
-
-    # If We Have To Change The The page Name -->(http://localhost:8000/api/?limit=2)
-    limit_query_param='page'             #  -->(http://localhost:8000/api/?page=2)
-
-    # Fectch Records Acording To Your Need Where We Want To Start From Perticular Record 
-    # http://localhost:8000/api/?page=1&offset=4
+    page_size=3
+    # In We Cursor Paginnation We Have Specify The Ordering Filed,Because In Cursor Pagination Order Data Default using creted fielss i case if in our data creted field are not present Then we Have To Specify The Ordering fields
+    ordering='Name'
     
-    
-    # offset_query_param Use To Change The if we Have To Change offset String
-    offset_query_param='records'
-    # Before http://localhost:8000/api/?page=1&offset=4
-    # After  http://localhost:8000/api/?page=1&records=4
 
-    # We Can Set maximum How Many Records Maximum Fetch User
-    max_page_size = 4
-    # http://localhost:8000/api/?page=1&records=4 It Work 
-    # http://localhost:8000/api/?page=1&records=5 It Will Not Work
-    
+    # If We Have To Change The The Cursor String -->(http://127.0.0.1:8000/api/?cursor=cD1HYXVyYW5n)
+    cursor_query_param='page'                 #  -->(http://127.0.0.1:8000/api/?page=cD1HYXVyYW5n)
+
+   
